@@ -14,7 +14,7 @@ PYTHONEXEC := py/main.py
 
 .PHONY: all clean debug
 
-all: CFLAGS += -O3 -Wall -Wextra -Werror -march=znver1 -funroll-loops
+all: CFLAGS += -O3 -Wall -Wextra -Werror -march=native -funroll-loops
 all: LDFLAGS += -s
 all: $(TARGET)
 
