@@ -98,6 +98,13 @@ void initialize(void){
             }
         }
     }
+    // Clean the allocated memory
+    for (cl_uint i = 0; i < ret_num_platforms; ++i){
+        if (device_id[i] != NULL){
+            free(device_id[i]);
+            device_id[i] = NULL;
+        }
+    }
     // Finally, create the context
     context = clCreateContext( NULL, 1, &pickedDevice, contextErrorCallback, NULL, &ret);
     clCheckError(ret, __LINE__);
