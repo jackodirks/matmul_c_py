@@ -135,7 +135,6 @@ void initialize(void){
     // Create the OpenCL program
     const char *sourceStrPtr = sourceStr;
     program = clCreateProgramWithSource(context, 1, &sourceStrPtr, (const size_t *)&readBytes, &ret);
-    printf("hit\n");
     clCheckError(ret, __LINE__);
     ret = clBuildProgram(program, 1, &pickedDevice, BUILDOPTIONS, NULL, NULL);
     if (ret != CL_SUCCESS){
