@@ -128,15 +128,16 @@ void initialize(void){
     }
     size_t size = (size_t)ftell(fp);
     rewind(fp);
-    char* sourceStr = malloc(size);
-    sourceStr[size - 1] = 0;
+    char sourceStr[size + 1];
+    sourceStr[size] = 0;
     size_t readBytes = fread(sourceStr, 1, size, fp);
     fclose(fp);
     // Create the OpenCL program
-    program = clCreateProgramWithSource(context, 1, (const char **)&sourceStr, (const size_t *)&readBytes, &ret);
+    const char *sourceStrPtr = sourceStr;
+    program = clCreateProgramWithSource(context, 1, &sourceStrPtr, (const size_t *)&readBytes, &ret);
+    printf("hit\n");
     clCheckError(ret, __LINE__);
     ret = clBuildProgram(program, 1, &pickedDevice, BUILDOPTIONS, NULL, NULL);
-    free(sourceStr);
     if (ret != CL_SUCCESS){
         char errString[1000];
         fprintf(stderr, "Error while building\n");
