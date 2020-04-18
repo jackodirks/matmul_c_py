@@ -55,11 +55,9 @@ def aligned(a, alignment=32):
 epsilon = 2**-50
 
 if __name__ == '__main__':
-    for arrSize in [8000]:
+    for arrSize in [2000, 4000]:
         arrA = numpy.array(numpy.random.rand(arrSize, arrSize),dtype=ctypes.c_double,order = 'C')
         arrB = numpy.array(numpy.random.rand(arrSize, arrSize),dtype=ctypes.c_double,order = 'C')
-        #arrA = numpy.array(numpy.full((arrSize,arrSize),3.0),dtype=ctypes.c_double,order = 'C')
-        #arrB = numpy.array(numpy.full((arrSize,arrSize),2.0),dtype=ctypes.c_double,order = 'C')
         arrResA = numpy.empty((arrSize, arrSize), dtype = ctypes.c_double, order = 'C')
         arrResB = numpy.empty((arrSize, arrSize), dtype = ctypes.c_double, order = 'C')
         arrResC = numpy.empty((arrSize, arrSize), dtype = ctypes.c_double, order = 'C')
@@ -68,10 +66,10 @@ if __name__ == '__main__':
         wrapped = wrapper(matmullib.matmulOpenClNaive, arrA, arrB, arrResA, arrSize)
         t = timeit.timeit(wrapped, number=1)
         print("OpenCL", t)
-        #wrapped = wrapper(matmullib.matmulSIMDMT, arrA, arrB, arrResB, arrSize, 6)
-        #t = timeit.timeit(wrapped, number=1)
-        #print("MT", t)
-        #wrapped = wrapper(matmullib.simdMoreOptimized, arrA, arrB, arrResC, arrSize)
-        #timeit.timeit(wrapped, number=1)
-        #t = timeit.timeit(wrapped, number=1)
-        #print("SIMD new", t)
+        wrapped = wrapper(matmullib.matmulSIMDMT, arrA, arrB, arrResB, arrSize, 12)
+        t = timeit.timeit(wrapped, number=1)
+        print("MT", t)
+        wrapped = wrapper(matmullib.simdMoreOptimized, arrA, arrB, arrResC, arrSize)
+        timeit.timeit(wrapped, number=1)
+        t = timeit.timeit(wrapped, number=1)
+        print("SIMD new", t)
